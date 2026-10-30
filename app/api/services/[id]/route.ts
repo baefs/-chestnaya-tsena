@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";import {db} from "@/lib/db";
+type Ctx={params:Promise<{id:string}>};export async function GET(_:Request,{params}:Ctx){const {id}=await params;try{const service=await db.service.findFirst({where:{id,isActive:true},include:{category:true}});return service?NextResponse.json(service):NextResponse.json({error:"Услуга не найдена."},{status:404});}catch{return NextResponse.json({error:"Ошибка базы данных."},{status:503});}}
