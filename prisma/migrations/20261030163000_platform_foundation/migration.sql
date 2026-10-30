@@ -71,7 +71,9 @@ BEGIN
  END IF;
  NEW.updated_at=now();
  RETURN NEW;
-END $$;
+END $;
+ALTER FUNCTION public.record_offer_price_history() SET search_path = public, pg_temp;
+REVOKE EXECUTE ON FUNCTION public.admin_login(text,text) FROM PUBLIC, anon, authenticated;
 DROP TRIGGER IF EXISTS offers_price_history_trigger ON public.offers;
 CREATE TRIGGER offers_price_history_trigger BEFORE INSERT OR UPDATE ON public.offers FOR EACH ROW EXECUTE FUNCTION public.record_offer_price_history();
 INSERT INTO public.service_categories(name,description,sort_order) VALUES
