@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172b25">
+  <title>Честная цена — сравнивай стоимость услуг в Москве</title>
+  <meta name="description" content="Независимый сервис сравнения стоимости повседневных услуг в Москве.">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="demo-ribbon"><span class="dot"></span> ДЕМО-ВЕРСИЯ · демонстрационные данные не являются реальными ценами</div>
+<header class="topbar">
+  <a class="brand" href="#" data-page="home"><span class="brand-mark">ч.</span><span>честная цена<span class="brand-dot">.</span></span></a>
+  <nav class="desktop-nav">
+    <a href="#" data-page="catalog">Каталог</a><a href="#" data-page="analytics">Аналитика</a><a href="#" data-page="map">Карта</a><a href="#" data-page="method">Методология</a>
+  </nav>
+  <div class="header-right"><span class="city"><i></i> Москва</span><button class="menu-toggle" id="menuToggle" aria-label="Открыть меню">☰</button></div>
+</header>
+<nav class="mobile-nav" id="mobileNav"><a data-page="catalog">Каталог</a><a data-page="analytics">Аналитика</a><a data-page="map">Карта</a><a data-page="method">Методология</a></nav>
+<main id="app">
+<section class="hero page active" id="page-home">
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="eyebrow-line"></span> НЕЗАВИСИМЫЙ МОНИТОРИНГ ЦЕН</div>
+    <h1>Не переплачивай.<br><em>Сравнивай.</em></h1>
+    <p class="hero-copy">Узнай, сколько действительно стоят привычные услуги в Москве. Сопоставимые предложения, прозрачные источники и понятная аналитика.</p>
+    <form class="searchbar" id="heroSearch"><span class="search-icon">⌕</span><input id="heroQuery" placeholder="Например, мужская стрижка" autocomplete="off"><button class="btn btn-lime">Найти услугу <span>↗</span></button></form>
+    <div class="search-hint">Популярное: <button data-search="Мужская стрижка">мужская стрижка</button><button data-search="Замена набоек">замена набоек</button><button data-search="Печать А4">печать А4</button></div>
+    <div class="hero-foot"><span><b class="pulse"></b> Прозрачные правила проверки</span><span>Данные по Москве</span><span>Без платного продвижения</span></div>
+  </div>
+  <div class="hero-art" aria-hidden="true"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-card"><div class="art-card-top"><span>СРЕДА СРАВНЕНИЯ</span><span class="art-menu">•••</span></div><div class="art-label">Стоимость услуги</div><div class="art-price">₽ — — —</div><div class="art-line"></div><div class="art-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="art-card-bottom"><span>Проверяемые источники</span><b>↗</b></div></div><div class="art-stamp">ЧЕСТНО<br>И ПОНЯТНО</div><div class="art-circle">₽</div></div>
+</section>
+<section class="page-section" id="home-content">
+  <div class="section-heading"><div><div class="eyebrow dark">НАВИГАЦИЯ ПО УСЛУГАМ</div><h2>Что будем сравнивать?</h2><p>Выбери направление — внутри только стандартизированные услуги.</p></div><a class="text-link" href="#" data-page="catalog">Весь каталог <span>↗</span></a></div>
+  <div class="category-grid" id="categoryGrid"></div>
+  <div class="stats-strip"><div><span class="stat-kicker">ОРГАНИЗАЦИЙ В БАЗЕ</span><strong>—</strong><small>Публикация после проверки</small></div><div><span class="stat-kicker">АКТУАЛЬНЫХ ПРЕДЛОЖЕНИЙ</span><strong>—</strong><small>Только подтверждённые цены</small></div><div><span class="stat-kicker">ГОРОД</span><strong>Москва</strong><small>Пилот: 3 административных округа</small></div><div class="stats-note">Мы не подменяем<br>отсутствие данных цифрами.</div></div>
+  <div class="section-heading compact"><div><div class="eyebrow dark">БЫСТРЫЙ ДОСТУП</div><h2>Популярные услуги</h2></div><span class="muted-note">Выбери услугу, чтобы открыть сравнение</span></div>
+  <div class="popular-list" id="popularList"></div>
+  <div class="method-banner"><div class="method-icon">✓</div><div><span class="eyebrow">НАША ПРИНЦИПИАЛЬНАЯ ПОЗИЦИЯ</span><h2>Нет проверенных данных —<br>нет выдуманной статистики.</h2><p>Каждое предложение связано с источником и датой проверки. Неподтверждённые цены не влияют на аналитику.</p><a class="text-link light" href="#" data-page="method">Как мы проверяем цены <span>↗</span></a></div><div class="banner-number">01<span>/04</span></div></div>
+</section>
+<section class="page page-inner" id="page-catalog">
+  <div class="page-head"><div class="eyebrow dark">КАТАЛОГ</div><h1>Каталог <em>услуг.</em></h1><p>Одинаковый состав работ — корректное сравнение. Выбери категорию или найди нужную услугу.</p></div>
+  <div class="catalog-toolbar"><div class="catalog-search"><span>⌕</span><input id="catalogQuery" placeholder="Поиск по услугам..."></div><div class="filter-pills" id="categoryFilters"></div></div>
+  <div id="catalogGroups" class="catalog-groups"></div>
+</section>
+<section class="page page-inner" id="page-compare">
+  <a href="#" class="back-link" data-page="catalog">← Назад в каталог</a>
+  <div class="compare-head"><div><div class="eyebrow dark" id="compareCategory">УСЛУГА</div><h1 id="compareTitle">Мужская стрижка</h1><p id="compareDescription">Стандартизированное описание услуги.</p></div><span class="demo-tag">ДЕМО-ДАННЫЕ</span></div>
+  <div class="compare-kpis"><div class="kpi-main"><span>МЕДИАННАЯ ЦЕНА</span><strong>—</strong><small>Недостаточно подтверждённых наблюдений</small></div><div class="kpi"><span>МИНИМУМ</span><strong>—</strong><small>Нет данных</small></div><div class="kpi"><span>МАКСИМУМ</span><strong>—</strong><small>Нет данных</small></div><div class="kpi"><span>ВЫБОРКА</span><strong>0</strong><small>актуальных предложений</small></div></div>
+  <div class="compare-layout"><aside class="filters"><div class="filter-title">Фильтры <button id="resetFilters">Сбросить</button></div><label>Административный округ<select id="districtFilter"><option value="">Все округа</option><option>Центральный</option><option>Северный</option><option>Юго-Западный</option></select></label><label>Статус проверки<select id="statusFilter"><option value="">Все статусы</option><option value="CONFIRMED">Подтверждено</option><option value="VERIFIED">Проверено командой</option></select></label><label>Цена, ₽<div class="range-inputs"><input id="minPrice" type="number" placeholder="От"><input id="maxPrice" type="number" placeholder="До"></div></label><div class="filter-note">В публичное сравнение попадают только актуальные предложения со статусом CONFIRMED или VERIFIED.</div></aside>
+  <div class="results"><div class="results-top"><div><h3>Предложения организаций</h3><span id="resultsCount">0 предложений</span></div><select id="sortSelect"><option value="asc">Сначала дешевле</option><option value="desc">Сначала дороже</option><option value="date">Сначала новые</option></select></div><div id="offersList" class="offers-list"><div class="empty-state"><div class="empty-symbol">⌕</div><h3>Пока недостаточно данных для сравнения</h3><p>Для публикации медианы нужно минимум 5 актуальных сопоставимых предложений. Мы не показываем случайные или неподтверждённые цены.</p><a class="text-link" href="#" data-page="method">Как формируется выборка ↗</a></div></div></div></div>
+  <div class="chart-placeholder"><div><div class="eyebrow dark">РАСПРЕДЕЛЕНИЕ ЦЕН</div><h3>Распределение стоимости</h3><p>График появится, когда накопится достаточное количество проверенных предложений.</p></div><div class="chart-empty">Недостаточно данных для построения графика</div></div>
+</section>
+<section class="page page-inner" id="page-analytics">
+  <div class="page-head"><div class="eyebrow dark">АНАЛИТИКА</div><h1>Цены без <em>иллюзий.</em></h1><p>Сводные показатели публикуются только при достаточном количестве актуальных и сопоставимых наблюдений.</p></div>
+  <div class="analytics-intro"><div><span class="eyebrow">ТЕКУЩИЙ СРЕЗ</span><h2>Москва · пилотные округа</h2><p>Центральный, Северный и Юго-Западный административные округа.</p></div><div class="period-select">Период <b>Последние 30 дней⌄</b></div></div>
+  <div class="analytics-kpis"><div><span>МЕДИАННАЯ ЦЕНА</span><b>—</b><small>Нет достаточной выборки</small></div><div><span>МИНИМАЛЬНАЯ ЦЕНА</span><b>—</b><small>Нет данных</small></div><div><span>МАКСИМАЛЬНАЯ ЦЕНА</span><b>—</b><small>Нет данных</small></div><div><span>ОРГАНИЗАЦИЙ</span><b>—</b><small>Данные не загружены</small></div></div>
+  <div class="analytics-grid"><div class="panel"><div class="panel-head"><div><h3>Динамика стоимости</h3><p>Изменение медианной цены во времени · ₽</p></div><span class="panel-chip">30 ДНЕЙ</span></div><div class="empty-chart"><div class="chart-gridlines"><i></i><i></i><i></i><i></i></div><div class="chart-center"><span>График будет доступен после накопления данных</span></div></div></div><div class="panel"><div class="panel-head"><div><h3>Сравнение округов</h3><p>Медианная цена · ₽</p></div></div><div class="district-empty"><div><span>ЦАО</span><i></i></div><div><span>САО</span><i></i></div><div><span>ЮЗАО</span><i></i></div><small>Не менее 5 организаций в каждой группе</small></div></div></div>
+  <div class="notice"><span>i</span><div><b>Почему здесь пока нет цифр?</b><p>Мы не заполняем аналитические блоки оценками или случайными значениями. Медиана публикуется при наличии минимум 5 актуальных предложений, а сравнение округов — минимум 5 организаций в каждой группе.</p></div></div>
+</section>
+<section class="page page-inner" id="page-map">
+  <div class="page-head"><div class="eyebrow dark">ГЕОГРАФИЯ</div><h1>Цены рядом с <em>тобой.</em></h1><p>Расположение организаций отображается только по проверенным координатам.</p></div>
+  <div class="map-toolbar"><label>Услуга<select id="mapService"><option value="">Все услуги</option></select></label><label>Округ<select id="mapDistrict"><option value="">Все округа</option><option>Центральный</option><option>Северный</option><option>Юго-Западный</option></select></label></div>
+  <div class="map-empty"><div class="map-grid"></div><div class="map-message"><div class="map-pin">⌖</div><h2>Карта пока без отметок</h2><p>В демонстрационной базе нет проверенных координат организаций. Мы не размещаем случайные маркеры — точки появятся после проверки адресов и геоданных.</p></div><div class="map-legend"><span><i class="legend-dot"></i> Проверенная организация</span><span><i class="legend-dot lime"></i> Выбранная услуга</span></div></div>
+</section>
+<section class="page page-inner" id="page-method">
+  <div class="page-head"><div class="eyebrow dark">ПРИНЦИПЫ РАБОТЫ</div><h1>Доверие начинается<br>с <em>методологии.</em></h1><p>Мы сравниваем не рекламные обещания, а проверяемые предложения с одинаковым составом работ.</p></div>
+  <div class="method-grid"><article class="method-card dark-card"><span>01 / СТАНДАРТИЗАЦИЯ</span><h2>Сравниваем<br>одинаковое.</h2><p>У каждой услуги есть единое описание и параметры. Стрижку с мытьём головы нельзя сравнивать со стрижкой без мытья.</p></article><article class="method-card"><span>02 / ИСТОЧНИКИ</span><h2>У каждой цены<br>есть источник.</h2><p>Официальные сайты и прайс-листы, официальные страницы организаций, телефонное подтверждение и личная проверка.</p></article><article class="method-card"><span>03 / ПРОВЕРКА</span><h2>Проверяем<br>актуальность.</h2><p>Сохраняем ссылку, метод проверки, дату получения и дату последней проверки. Пользовательские сообщения не участвуют в статистике до модерации.</p></article><article class="method-card"><span>04 / АНАЛИТИКА</span><h2>Не додумываем<br>за данные.</h2><p>Медиана — минимум 5 актуальных предложений. Для сравнения районов — минимум 5 организаций в каждой группе.</p></article></div>
+  <div class="status-section"><div><div class="eyebrow dark">СТАТУСЫ ДОСТОВЕРНОСТИ</div><h2>Понятно, насколько<br>можно доверять цене.</h2></div><div class="status-list"><div><b class="status confirmed">CONFIRMED</b><span><strong>Подтверждено</strong><small>Организацией или актуальным официальным прайсом.</small></span></div><div><b class="status verified">VERIFIED</b><span><strong>Проверено командой</strong><small>Данные проверены участниками проекта.</small></span></div><div><b class="status reported">USER_REPORTED</b><span><strong>Сообщено пользователем</strong><small>Не включается в публичную статистику до модерации.</small></span></div><div><b class="status outdated">OUTDATED</b><span><strong>Устарело</strong><small>Исключается из текущих расчётов.</small></span></div></div></div>
+  <div class="freshness"><div><div class="eyebrow">СРОК АКТУАЛЬНОСТИ</div><h2>Цена тоже<br>имеет срок годности.</h2></div><div class="freshness-items"><div><b>0–30</b><span>дней</span><small>Актуальная цена</small></div><div><b>31–60</b><span>дней</span><small>Требует обновления</small></div><div><b>60+</b><span>дней</span><small>Устаревшая цена</small></div></div></div>
+  <div class="method-footnote">Сроки актуальности — внутренний стандарт проекта, а не нормативное требование.</div>
+</section>
+</main>
+<footer><a class="brand footer-brand" href="#" data-page="home"><span class="brand-mark">ч.</span><span>честная цена<span class="brand-dot">.</span></span></a><span>Независимое сравнение стоимости услуг в Москве</span><a href="#" data-page="method">Методология</a><small>© 2026 · Демонстрационный прототип</small></footer>
+<script src="app.js"></script>
+</body></html>
