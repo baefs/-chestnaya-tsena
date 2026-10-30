@@ -60,7 +60,7 @@ ALTER TABLE public.sources ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.submissions ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON public.admin_accounts,public.admin_sessions,public.offers,public.organizations,public.price_history,public.service_categories,public.services,public.sources,public.submissions FROM anon,authenticated;
 CREATE OR REPLACE FUNCTION public.record_offer_price_history()
-RETURNS trigger LANGUAGE plpgsql AS $$
+RETURNS trigger LANGUAGE plpgsql SET search_path = public, pg_temp AS $$
 BEGIN
  IF TG_OP='INSERT' THEN
   INSERT INTO public.price_history(offer_id,old_price,new_price,new_price_min,new_price_max,new_price_type,change_reason)
@@ -69,13 +69,16 @@ BEGIN
   INSERT INTO public.price_history(offer_id,old_price,new_price,old_price_min,old_price_max,new_price_min,new_price_max,old_price_type,new_price_type,change_reason)
   VALUES(NEW.id,OLD.price,NEW.price,OLD.price_min,OLD.price_max,NEW.price_min,NEW.price_max,OLD.price_type,NEW.price_type,'Изменение стоимости или типа цены');
  END IF;
- NEW.updated_at=now();
  RETURN NEW;
-END $;
-ALTER FUNCTION public.record_offer_price_history() SET search_path = public, pg_temp;
+END $$;
+CREATE OR REPLACE FUNCTION public.touch_offer_updated_at()
+RETURNS trigger LANGUAGE plpgsql SET search_path = public, pg_temp AS $$
+BEGIN NEW.updated_at=now(); RETURN NEW; END $$;
 REVOKE EXECUTE ON FUNCTION public.admin_login(text,text) FROM PUBLIC, anon, authenticated;
 DROP TRIGGER IF EXISTS offers_price_history_trigger ON public.offers;
-CREATE TRIGGER offers_price_history_trigger BEFORE INSERT OR UPDATE ON public.offers FOR EACH ROW EXECUTE FUNCTION public.record_offer_price_history();
+CREATE TRIGGER offers_price_history_trigger AFTER INSERT OR UPDATE ON public.offers FOR EACH ROW EXECUTE FUNCTION public.record_offer_price_history();
+DROP TRIGGER IF EXISTS offers_updated_at_trigger ON public.offers;
+CREATE TRIGGER offers_updated_at_trigger BEFORE UPDATE ON public.offers FOR EACH ROW EXECUTE FUNCTION public.touch_offer_updated_at();
 INSERT INTO public.service_categories(name,description,sort_order) VALUES
  ('Красота','Услуги парикмахерских и ухода',1),('Ремонт обуви','Ремонт и профилактика обуви',2),('Печать','Печать документов и изображений',3),('Химчистка','Профессиональная чистка одежды',4),('Велосервис','Обслуживание и ремонт велосипедов',5)
 ON CONFLICT(name) DO UPDATE SET description=EXCLUDED.description,sort_order=EXCLUDED.sort_order;
