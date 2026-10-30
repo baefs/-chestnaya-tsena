@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";import {db} from "@/lib/db";
+export const dynamic="force-dynamic";export async function GET(req:Request){const u=new URL(req.url);const district=u.searchParams.get("district")||undefined;try{return NextResponse.json(await db.organization.findMany({where:{isActive:true,...(district?{district}:{})},orderBy:{name:"asc"}}));}catch{return NextResponse.json({error:"Не удалось загрузить организации."},{status:503});}}
