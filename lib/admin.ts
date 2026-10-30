@@ -1,0 +1,2 @@
+import {createSupabaseServerClient} from "@/lib/supabase/server";import {db} from "@/lib/db";
+export async function currentAdmin(){const supabase=await createSupabaseServerClient();const {data:{user},error}=await supabase.auth.getUser();if(error||!user)return null;return db.adminAccount.findFirst({where:{authUserId:user.id,isActive:true,role:{in:["ADMIN","MODERATOR"]}},select:{id:true,username:true,role:true}});}
