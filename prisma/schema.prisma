@@ -109,7 +109,13 @@ model PriceHistory {
   id String @id @default(uuid()) @db.Uuid
   offerId String @map("offer_id") @db.Uuid
   oldPrice Decimal? @map("old_price") @db.Decimal(12,2)
-  newPrice Decimal @map("new_price") @db.Decimal(12,2)
+  newPrice Decimal? @map("new_price") @db.Decimal(12,2)
+  oldPriceMin Decimal? @map("old_price_min") @db.Decimal(12,2)
+  oldPriceMax Decimal? @map("old_price_max") @db.Decimal(12,2)
+  newPriceMin Decimal? @map("new_price_min") @db.Decimal(12,2)
+  newPriceMax Decimal? @map("new_price_max") @db.Decimal(12,2)
+  oldPriceType String? @map("old_price_type")
+  newPriceType String? @map("new_price_type")
   changedAt DateTime @default(now()) @map("changed_at") @db.Timestamptz(6)
   changedBy String? @map("changed_by") @db.Uuid
   changeReason String @default("") @map("change_reason")
