@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminAccount {
+  id          String   @id @default(uuid()) @db.Uuid
+  username    String   @unique
+  passwordHash String  @map("password_hash")
+  authUserId  String?  @unique @map("auth_user_id") @db.Uuid
+  role        String   @default("ADMIN")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  @@map("admin_accounts")
+}
+
+model AdminSession {
+  id        String   @id @default(uuid()) @db.Uuid
+  tokenHash String   @map("token_hash")
+  adminId   String   @map("admin_id") @db.Uuid
+  expiresAt DateTime @map("expires_at") @db.Timestamptz
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  @@map("admin_sessions")
+}
+
+model ServiceCategory {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String    @unique
+  description String  @default("")
+  sortOrder Int       @default(0) @map("sort_order")
+  isActive  Boolean   @default(true) @map("is_active")
+  services  Service[]
+  @@map("service_categories")
+}
+
+model Service {
+  id          String   @id @default(uuid()) @db.Uuid
+  categoryId  String   @map("category_id") @db.Uuid
+  name        String
+  description String   @default("")
+  unit        String   @default("услуга")
+  parameters  Json     @default("{}")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz
+  category    ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  offers      Offer[]
+  submissions Submission[]
+  @@index([categoryId, isActive])
+  @@map("services")
+}
+
+model Organization {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  address   String   @default("")
+  district  String   @default("")
+  area      String   @default("")
+  phone     String   @default("")
+  website   String   @default("")
+  sourceUrl String   @default("") @map("source_url")
+  latitude  Float?
+  longitude Float?
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz
+  offers    Offer[]
+  submissions Submission[]
+  @@index([district, isActive])
+  @@map("organizations")
+}
+
+model Source {
+  id          String   @id @default(uuid()) @db.Uuid
+  sourceType  String   @map("source_type")
+  sourceUrl   String   @map("source_url")
+  description String   @default("")
+  collectedAt DateTime @default(now()) @map("collected_at") @db.Timestamptz
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  offers      Offer[]
+  @@map("sources")
+}
+
+model Offer {
+  id                 String   @id @default(uuid()) @db.Uuid
+  serviceId          String   @map("service_id") @db.Uuid
+  organizationId     String   @map("organization_id") @db.Uuid
+  price              Decimal  @db.Decimal(12, 2)
+  priceMin           Decimal? @map("price_min") @db.Decimal(12, 2)
+  priceMax           Decimal? @map("price_max") @db.Decimal(12, 2)
+  currency           String   @default("RUB")
+  priceType          String   @default("FIXED") @map("price_type")
+  conditions         String   @default("")
+  sourceId           String?  @map("source_id") @db.Uuid
+  sourceUrl          String   @default("") @map("source_url")
+  verificationMethod String   @default("") @map("verification_method")
+  status             String   @default("USER_REPORTED")
+  checkedAt          DateTime? @map("checked_at") @db.Date
+  collectedAt        DateTime @default(now()) @map("collected_at") @db.Timestamptz
+  notes              String   @default("")
+  isPublished        Boolean  @default(false) @map("is_published")
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt          DateTime @default(now()) @map("updated_at") @db.Timestamptz
+  service            Service @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  organization       Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  source             Source? @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  history            PriceHistory[]
+  @@index([serviceId, status, checkedAt])
+  @@index([organizationId])
+  @@map("offers")
+}
+
+model PriceHistory {
+  id           String   @id @default(uuid()) @db.Uuid
+  offerId      String   @map("offer_id") @db.Uuid
+  oldPrice     Decimal? @map("old_price") @db.Decimal(12, 2)
+  newPrice     Decimal  @map("new_price") @db.Decimal(12, 2)
+  changedAt    DateTime @default(now()) @map("changed_at") @db.Timestamptz
+  changedBy    String?  @map("changed_by") @db.Uuid
+  changeReason String   @default("") @map("change_reason")
+  offer        Offer    @relation(fields: [offerId], references: [id], onDelete: Restrict)
+  @@index([offerId, changedAt])
+  @@map("price_history")
+}
+
+model Submission {
+  id             String   @id @default(uuid()) @db.Uuid
+  serviceId      String   @map("service_id") @db.Uuid
+  organizationId String?  @map("organization_id") @db.Uuid
+  proposedPrice  Decimal  @map("proposed_price") @db.Decimal(12, 2)
+  evidence       String   @default("")
+  status         String   @default("USER_REPORTED")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  reviewedAt     DateTime? @map("reviewed_at") @db.Timestamptz
+  reviewNote     String   @default("") @map("review_note")
+  service        Service @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  @@index([status, createdAt])
+  @@map("submissions")
+}
